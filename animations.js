@@ -35,6 +35,7 @@
     initFaq();
     initFocusTabs();
     initMobileNav();
+    initProductParallax();
     return;
   }
 
@@ -80,6 +81,7 @@
   initFaq();
   initFocusTabs();
   initMobileNav();
+  initProductParallax();
 
   /* ----------------------------------------------------------
      FAQ accordion — one item open at a time
@@ -237,5 +239,50 @@
         setOpen(false);
       });
     });
+  }
+
+  /* ----------------------------------------------------------
+     Product parallax — bottle/pen/capsule/coin drift at
+     slightly different rates as the section scrolls past.
+     Desktop/tablet only; skipped entirely on reduced motion.
+     ---------------------------------------------------------- */
+  function initProductParallax() {
+    if (reducedMotion) return;
+    var section = document.querySelector('.ongoing-relationship');
+    var layers = document.querySelectorAll('.ongoing-relationship .product-layer');
+    if (!section || !layers.length) return;
+
+    var mq = window.matchMedia('(min-width: 769px)');
+    var ticking = false;
+
+    function update() {
+      ticking = false;
+      if (!mq.matches) {
+        layers.forEach(function (el) {
+          el.style.removeProperty('--parallax-y');
+        });
+        return;
+      }
+      var rect = section.getBoundingClientRect();
+      var center = rect.top + rect.height / 2;
+      var viewportCenter = window.innerHeight / 2;
+      var offset = center - viewportCenter;
+      layers.forEach(function (el) {
+        var rate = parseFloat(el.dataset.parallaxRate) || 0.05;
+        var y = Math.max(-40, Math.min(40, offset * rate));
+        el.style.setProperty('--parallax-y', y.toFixed(1) + 'px');
+      });
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    update();
   }
 })();

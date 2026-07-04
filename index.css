@@ -756,6 +756,32 @@
   	object-fit: cover;
   	flex-shrink: 0;
 }
+.product-layer {
+  	position: absolute;
+  	transform: translate(-50%, -50%) translateY(var(--parallax-y, 0px));
+  	pointer-events: none;
+  	will-change: transform;
+}
+.product-bottle {
+  	left: 44.57%;
+  	top: 33.18%;
+  	width: 25.75%;
+}
+.product-pen {
+  	left: 66.12%;
+  	top: 39.67%;
+  	width: 21.04%;
+}
+.product-capsule {
+  	left: 28.31%;
+  	top: 38.43%;
+  	width: 11%;
+}
+.product-coin {
+  	left: 29.95%;
+  	top: 49.11%;
+  	width: 11.13%;
+}
 .bottom-element {
   	position: absolute;
   	top: 60.582%;
@@ -2037,6 +2063,9 @@
     gap: 32px;
     padding: 48px 20px;
     box-sizing: border-box;
+  }
+  .product-layer {
+    display: none;
   }
   .upper-text,
   .bottom-element {
