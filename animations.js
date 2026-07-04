@@ -34,6 +34,7 @@
   if (reducedMotion || !('IntersectionObserver' in window)) {
     initFaq();
     initFocusTabs();
+    initMobileNav();
     return;
   }
 
@@ -78,6 +79,7 @@
 
   initFaq();
   initFocusTabs();
+  initMobileNav();
 
   /* ----------------------------------------------------------
      FAQ accordion — one item open at a time
@@ -201,5 +203,39 @@
         setTimeout(finish, 600);
       }, swapDelay);
     }
+  }
+
+  /* ----------------------------------------------------------
+     Mobile nav — hamburger toggles the slide-out link panel
+     ---------------------------------------------------------- */
+  function initMobileNav() {
+    var toggle = document.querySelector('.hamburger-toggle');
+    var panel = document.querySelector('.nav-bar .weight-parent');
+    var overlay = document.querySelector('.nav-overlay');
+    if (!toggle || !panel) return;
+
+    function setOpen(isOpen) {
+      panel.classList.toggle('open', isOpen);
+      toggle.classList.toggle('open', isOpen);
+      toggle.setAttribute('aria-expanded', String(isOpen));
+      if (overlay) overlay.classList.toggle('open', isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    }
+
+    toggle.addEventListener('click', function () {
+      setOpen(!panel.classList.contains('open'));
+    });
+
+    if (overlay) {
+      overlay.addEventListener('click', function () {
+        setOpen(false);
+      });
+    }
+
+    panel.querySelectorAll('.weight').forEach(function (link) {
+      link.addEventListener('click', function () {
+        setOpen(false);
+      });
+    });
   }
 })();
