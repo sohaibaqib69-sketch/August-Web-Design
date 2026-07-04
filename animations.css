@@ -1,0 +1,409 @@
+/* ============================================================
+   august — micro-animations
+   Subtle, premium motion: short distances, soft easing, no bounce.
+   ============================================================ */
+
+:root {
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-inout: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ------------------------------------------------------------
+   1. Hero intro — staggered fade-up on load
+   ------------------------------------------------------------ */
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes hero-zoom {
+  from { transform: scale(1.035); }
+  to   { transform: scale(1); }
+}
+
+.nav-bar,
+.announcement-bar {
+  animation: fade-in 0.8s var(--ease-out) 0.1s both;
+}
+.hero-copy .tag                     { animation: rise-in 0.7s var(--ease-out) 0.25s both; }
+.hero-copy .a-quiet-kind-container  { animation: rise-in 0.8s var(--ease-out) 0.38s both; }
+.hero-copy .prescription-treatments-for { animation: rise-in 0.8s var(--ease-out) 0.52s both; }
+.hero-copy .buttons                 { animation: rise-in 0.8s var(--ease-out) 0.66s both; }
+.hero-copy .badges                  { animation: rise-in 0.8s var(--ease-out) 0.80s both; }
+.hero-section .quote                { animation: rise-in 0.9s var(--ease-out) 1.0s both; }
+.hero-section .background-icon,
+.hero-section .background-image-bg-removed-icon {
+  animation: hero-zoom 2.4s var(--ease-out) both;
+}
+
+/* Floating stat card: fade in, then a slow levitation loop */
+@keyframes levitate {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-7px); }
+}
+.floating-info-card {
+  animation:
+    rise-in 0.9s var(--ease-out) 1.15s both,
+    levitate 4.5s ease-in-out 2.2s infinite alternate;
+}
+
+/* Gradient shimmer on the hero "Care" word — barely-there drift */
+@keyframes gradient-drift {
+  from { background-position: 0% 50%; }
+  to   { background-position: 100% 50%; }
+}
+.a-quiet-kind-container .care {
+  background-size: 200% 100%;
+  animation: gradient-drift 7s ease-in-out infinite alternate;
+}
+
+/* ------------------------------------------------------------
+   2. Scroll reveal — once, then classes are stripped by JS
+   ------------------------------------------------------------ */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.65s var(--ease-out),
+    transform 0.65s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ------------------------------------------------------------
+   3. Buttons — hover / pressed states
+   ------------------------------------------------------------ */
+.begin-cta, .begin-cta2, .see-how-it-works-cta, .learn-more-cta,
+.login-wrapper, .begin-wrapper, .start-your-journey-cta, .see-you-cta,
+.view-all-cta, .learn-more-button, .get-the-guide-cta,
+.begin-your-journey-wrapper {
+  cursor: pointer;
+  transition:
+    transform 0.22s var(--ease-out),
+    box-shadow 0.22s var(--ease-out),
+    filter 0.22s var(--ease-out);
+}
+
+/* Dark buttons */
+.begin-cta:hover, .begin-cta2:hover, .begin-wrapper:hover,
+.view-all-cta:hover, .begin-your-journey-wrapper:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0px 2px 8.2px rgba(37, 56, 40, 0.59) inset,
+    0 8px 20px -6px rgba(12, 18, 13, 0.45);
+}
+
+/* Light / tan buttons */
+.see-how-it-works-cta:hover, .learn-more-cta:hover, .login-wrapper:hover,
+.start-your-journey-cta:hover, .see-you-cta:hover, .learn-more-button:hover,
+.get-the-guide-cta:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.04);
+  box-shadow: 0 8px 20px -6px rgba(131, 85, 49, 0.35);
+}
+
+/* Pressed */
+.begin-cta:active, .begin-cta2:active, .see-how-it-works-cta:active,
+.learn-more-cta:active, .login-wrapper:active, .begin-wrapper:active,
+.start-your-journey-cta:active, .see-you-cta:active, .view-all-cta:active,
+.learn-more-button:active, .get-the-guide-cta:active,
+.begin-your-journey-wrapper:active {
+  transform: translateY(0) scale(0.98);
+  transition-duration: 0.08s;
+}
+
+/* Arrow nudge inside CTAs */
+.tablerarrow-up-icon, .lucidearrow-up-icon {
+  transition: transform 0.25s var(--ease-out);
+}
+.begin-cta:hover .tablerarrow-up-icon,
+.begin-cta2:hover .tablerarrow-up-icon,
+.learn-more-cta:hover .tablerarrow-up-icon {
+  transform: translate(2px, -2px);
+}
+.see-how-it-works-cta:hover .lucidearrow-up-icon {
+  transform: translate(2px, -2px);
+}
+
+/* ------------------------------------------------------------
+   4. Nav links — color + underline grow
+   ------------------------------------------------------------ */
+.weight-parent .weight {
+  cursor: pointer;
+  transition: color 0.25s var(--ease-out);
+}
+.weight-parent .weight::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 1px;
+  background: #fff;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.3s var(--ease-out);
+}
+.weight-parent .weight:hover {
+  color: #fff;
+}
+.weight-parent .weight:hover::after {
+  transform: scaleX(1);
+}
+
+/* ------------------------------------------------------------
+   5. Cards — lift shadows + slow image zoom
+   ------------------------------------------------------------ */
+.performance2 {
+  cursor: pointer;
+  transition:
+    border-color 0.3s var(--ease-out),
+    box-shadow 0.3s var(--ease-out);
+}
+.performance2:hover {
+  border-color: #ba9a81;
+  box-shadow: 0 10px 28px -10px rgba(131, 85, 49, 0.35);
+}
+.performance2:active {
+  box-shadow: 0 4px 12px -6px rgba(131, 85, 49, 0.3);
+}
+
+.card-01, .testimonial-01 {
+  transition: box-shadow 0.35s var(--ease-out);
+}
+.card-01:hover, .testimonial-01:hover {
+  box-shadow: 0 18px 40px -14px rgba(0, 0, 0, 0.45);
+}
+.bg-icon, .bg-icon2, .bg-icon3, .bg-icon4,
+.image-24-icon, .image-25-icon, .image-26-icon, .image-27-icon,
+.bg-image-icon {
+  transition: transform 0.8s var(--ease-out);
+}
+.card-01:hover .bg-icon,
+.card-01:hover .bg-icon2,
+.card-01:hover .bg-icon3,
+.card-01:hover .bg-icon4,
+.testimonial-01:hover .image-24-icon,
+.testimonial-01:hover .image-25-icon,
+.testimonial-01:hover .image-26-icon,
+.testimonial-01:hover .image-27-icon,
+.information-card:hover .bg-image-icon {
+  transform: scale(1.04);
+}
+
+/* ------------------------------------------------------------
+   6. Logo marquee — slow, seamless, pauses on hover
+   ------------------------------------------------------------ */
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.companies-worked-with {
+  align-items: stretch;
+}
+.companies-worked-with .companies-logos {
+  width: max-content;
+  gap: 0;
+  animation: marquee-scroll 40s linear infinite;
+}
+.companies-worked-with .companies-logos img {
+  margin-right: 128px;
+  opacity: 0.75;
+  transition: opacity 0.3s var(--ease-out);
+}
+.companies-worked-with .companies-logos img:hover {
+  opacity: 1;
+}
+.companies-worked-with:hover .companies-logos {
+  animation-play-state: paused;
+}
+.companies-worked-with {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+/* ------------------------------------------------------------
+   7. FAQ accordion
+   ------------------------------------------------------------ */
+.faqs3 .faq-01 .how-do-i-get-started-parent {
+  cursor: pointer;
+}
+.faqs3 .faq-01 .physician-guided-telehealth {
+  transition: color 0.25s var(--ease-out);
+}
+.faqs3 .faq-01:hover .physician-guided-telehealth {
+  color: #70543e;
+}
+.faqs3 .eparrow-up-bold-icon {
+  transition: transform 0.4s var(--ease-inout);
+}
+.faqs3 .faq-01.open .eparrow-up-bold-icon {
+  transform: rotate(180deg);
+}
+.faq-answer {
+  align-self: stretch;
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.45s var(--ease-inout);
+}
+.faq-01.open .faq-answer {
+  grid-template-rows: 1fr;
+}
+.faq-answer-body {
+  overflow: hidden;
+}
+.faq-answer-content {
+  padding-bottom: 4px;
+  font-size: 15px;
+  letter-spacing: -0.02em;
+  line-height: 160%;
+  color: #455b49;
+  max-width: 520px;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    opacity 0.35s var(--ease-out) 0.1s,
+    transform 0.35s var(--ease-out) 0.1s;
+}
+.faq-01.open .faq-answer-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ------------------------------------------------------------
+   8. Misc interactive touches
+   ------------------------------------------------------------ */
+.mdiinstagram {
+  cursor: pointer;
+  transition:
+    transform 0.25s var(--ease-out),
+    background-color 0.25s var(--ease-out);
+}
+.mdiinstagram:hover {
+  transform: scale(1.08);
+  background-color: #cbab90;
+}
+.mdiinstagram:active {
+  transform: scale(0.95);
+}
+
+.details .physician-guided-prescription,
+.details2 .physician-guided-prescription {
+  cursor: pointer;
+  width: fit-content;
+  transition: color 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+}
+.details .physician-guided-prescription:hover,
+.details2 .physician-guided-prescription:hover {
+  color: #ba9a81;
+  transform: translateX(3px);
+}
+
+.email {
+  transition: border-color 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
+}
+.email:hover {
+  border-color: #ba9a81;
+}
+.email:focus-within {
+  border-color: #ba9a81;
+  box-shadow: 0 0 0 3px rgba(186, 154, 129, 0.2);
+}
+
+/* Progress bar in the floating card fills on load */
+@keyframes bar-fill {
+  from { width: 0; }
+  to   { width: 144.2px; }
+}
+.frame-item {
+  animation: bar-fill 1.2s var(--ease-out) 1.6s both;
+}
+
+/* ------------------------------------------------------------
+   9. Choose-your-focus tabs — selected state + content crossfade
+   ------------------------------------------------------------ */
+.performance2::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #0c120d, #253828);
+  opacity: 0;
+  transition: opacity 0.35s var(--ease-out);
+}
+.performance2 .text {
+  z-index: 1;
+}
+.performance2 .weight2,
+.performance2 .glp-1-metabolic {
+  transition: color 0.35s var(--ease-out);
+}
+.performance2.selected::before {
+  opacity: 1;
+}
+.performance2.selected {
+  border-color: #374535;
+  box-shadow: 0 10px 28px -10px rgba(12, 18, 13, 0.45);
+}
+.performance2.selected .weight2 {
+  color: #f1ebdf;
+}
+.performance2.selected .glp-1-metabolic {
+  color: rgba(241, 235, 223, 0.65);
+}
+
+/* Tab content varies in length: anchor copy to the card bottom and
+   let stat columns size to their text so nothing wraps or clips. */
+.information-card .text5 {
+  top: auto;
+  bottom: 24px;
+}
+.information-card .weeks-parent,
+.information-card .monthly-parent {
+  width: auto;
+}
+.information-card .weeks-parent .monthly,
+.information-card .monthly-parent .monthly,
+.information-card .to-first-results {
+  white-space: nowrap;
+}
+
+/* Crossfade of the info card content while switching tabs */
+.information-card .bg-image-icon {
+  transition:
+    transform 0.8s var(--ease-out),
+    opacity 0.3s var(--ease-out);
+}
+.information-card .text5 {
+  transition:
+    opacity 0.28s var(--ease-out),
+    transform 0.28s var(--ease-out);
+}
+.information-card.switching .bg-image-icon {
+  opacity: 0;
+}
+.information-card.switching .text5 {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+/* ------------------------------------------------------------
+   10. Reduced motion — switch everything off
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
